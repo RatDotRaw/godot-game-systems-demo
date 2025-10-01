@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://tk8pj8g7k3bh"]
+
+[ext_resource type="Texture2D" uid="uid://b2qprb553h25c" path="res://textures/purple.png" id="1_7gfrn"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_7gfrn"]
+radius = 0.25
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o7335"]
+albedo_texture = ExtResource("1_7gfrn")
+
+[sub_resource type="SphereMesh" id="SphereMesh_xb03j"]
+material = SubResource("StandardMaterial3D_o7335")
+radius = 0.25
+height = 0.5
+
+[node name="RigidCube" type="RigidBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_7gfrn")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_xb03j")

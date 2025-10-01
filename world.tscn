@@ -1,0 +1,110 @@
+[gd_scene load_steps=9 format=3 uid="uid://cqfeerp4ayk4c"]
+
+[ext_resource type="PackedScene" uid="uid://dqc6atesu6yt5" path="res://char_controller/Char3D.tscn" id="1_f3sb7"]
+[ext_resource type="Texture2D" uid="uid://b8hdvo2yvu23p" path="res://textures/dark.png" id="2_fj7yv"]
+[ext_resource type="PackedScene" uid="uid://ddy4yl4phqnd2" path="res://objects/RigidCube.tscn" id="3_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://tk8pj8g7k3bh" path="res://objects/RigidSphere.tscn" id="4_aqk2v"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f3sb7"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_fj7yv"]
+sky_material = SubResource("ProceduralSkyMaterial_f3sb7")
+
+[sub_resource type="Environment" id="Environment_tlwt5"]
+background_mode = 2
+sky = SubResource("Sky_fj7yv")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fj7yv"]
+albedo_texture = ExtResource("2_fj7yv")
+uv1_triplanar = true
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_tlwt5")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Char3d" parent="." instance=ExtResource("1_f3sb7")]
+transform = Transform3D(-5.9604645e-08, 0, 1, 0, 1, 0, -1, 0, -5.9604645e-08, 7, 0, 0)
+look_sensitivity = null
+max_walk_speed = null
+coyote_time = null
+jump_buffer_time = null
+MAX_FLOOR_DEG = null
+
+[node name="wold" type="Node3D" parent="."]
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="wold"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+use_collision = true
+size = Vector3(51, 11, 51)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="wold/CSGBox3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+operation = 2
+size = Vector3(50, 11, 50)
+material = SubResource("StandardMaterial3D_fj7yv")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="wold"]
+use_collision = true
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="wold/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 2.5, 0)
+radius = 2.0
+height = 5.0
+sides = 16
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="wold/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 2.5, 6)
+radius = 2.0
+height = 5.0
+sides = 16
+
+[node name="CSGCylinder3D4" type="CSGCylinder3D" parent="wold/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 2.5, 3)
+radius = 2.0
+height = 5.0
+sides = 16
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="wold/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 7.5, 3)
+radius = 2.0
+height = 5.0
+sides = 16
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="wold/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+radius = 3.0
+radial_segments = 16
+rings = 8
+
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="wold/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 20)
+radius = 3.0
+radial_segments = 16
+rings = 8
+
+[node name="CSGSphere3D3" type="CSGSphere3D" parent="wold/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 20)
+radius = 3.0
+radial_segments = 16
+rings = 8
+
+[node name="RigidCube" parent="." instance=ExtResource("3_tlwt5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8127544, 0.25, -2.8390932)
+
+[node name="RigidCube2" parent="." instance=ExtResource("3_tlwt5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8442345, 0.24999952, -3.5795135)
+
+[node name="RigidCube3" parent="." instance=ExtResource("3_tlwt5")]
+transform = Transform3D(0.961593, 0, 0.27447954, 0, 1, 0, -0.27447954, 0, 0.961593, 2.8158462, 0.7500005, -3.3601642)
+
+[node name="RigidCube4" parent="." instance=ExtResource("4_aqk2v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8788483, 1.2500005, -3.4624982)

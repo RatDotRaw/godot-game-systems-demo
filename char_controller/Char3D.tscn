@@ -1,0 +1,73 @@
+[gd_scene load_steps=6 format=3 uid="uid://dqc6atesu6yt5"]
+
+[ext_resource type="Script" uid="uid://biipweh5tn8qc" path="res://char_controller/char_3d.gd" id="1_43pjh"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_43pjh"]
+friction = 0.0
+
+[sub_resource type="Curve" id="Curve_43pjh"]
+_limits = [0.0, 10.0, 0.0, 5.0]
+_data = [Vector2(0, 10), 0.0, 0.0, 0, 0, Vector2(5, 5), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="PrismMesh" id="PrismMesh_3e3go"]
+size = Vector3(0.2, 0.1, 0.05)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_43pjh"]
+radius = 0.35
+
+[node name="Char3d" type="RigidBody3D"]
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+physics_material_override = SubResource("PhysicsMaterial_43pjh")
+can_sleep = false
+contact_monitor = true
+max_contacts_reported = 8
+script = ExtResource("1_43pjh")
+walk_acceleration = SubResource("Curve_43pjh")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 0, 0, -0.25)
+mesh = SubResource("PrismMesh_3e3go")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_43pjh")
+
+[node name="CameraGimbal" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraGimbal"]
+current = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "on floor:"
+
+[node name="TouchingFloorLabel" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "NaN"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "current velocity:"
+
+[node name="CurrentVelocityLabel" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "NaN"
