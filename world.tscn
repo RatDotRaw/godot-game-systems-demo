@@ -1,9 +1,15 @@
-[gd_scene load_steps=9 format=3 uid="uid://cqfeerp4ayk4c"]
+[gd_scene load_steps=14 format=3 uid="uid://cqfeerp4ayk4c"]
 
 [ext_resource type="PackedScene" uid="uid://dqc6atesu6yt5" path="res://char_controller/Char3D.tscn" id="1_f3sb7"]
-[ext_resource type="Texture2D" uid="uid://b8hdvo2yvu23p" path="res://textures/dark.png" id="2_fj7yv"]
+[ext_resource type="Material" uid="uid://1mvei6eaxkyo" path="res://textures/dark.tres" id="2_aqk2v"]
+[ext_resource type="Material" uid="uid://m4icjr7i3mjt" path="res://textures/red.tres" id="3_036b0"]
 [ext_resource type="PackedScene" uid="uid://ddy4yl4phqnd2" path="res://objects/RigidCube.tscn" id="3_tlwt5"]
 [ext_resource type="PackedScene" uid="uid://tk8pj8g7k3bh" path="res://objects/RigidSphere.tscn" id="4_aqk2v"]
+[ext_resource type="Material" uid="uid://g2qx2rq5jgvg" path="res://textures/purple.tres" id="4_gbfbk"]
+[ext_resource type="Material" uid="uid://c8sjkmweophpm" path="res://textures/green.tres" id="4_pkg7o"]
+[ext_resource type="Material" uid="uid://dbubqaugcmkm7" path="res://textures/orange.tres" id="5_gbfbk"]
+[ext_resource type="PackedScene" uid="uid://c22kt5by4oh4m" path="res://objects/RigidCubeM.tscn" id="9_wse8f"]
+[ext_resource type="PackedScene" uid="uid://b2rm38w7qqd0c" path="res://objects/RigidCubeH.tscn" id="10_ic0uy"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f3sb7"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -16,11 +22,8 @@ sky_material = SubResource("ProceduralSkyMaterial_f3sb7")
 background_mode = 2
 sky = SubResource("Sky_fj7yv")
 tonemap_mode = 2
+sdfgi_enabled = true
 glow_enabled = true
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fj7yv"]
-albedo_texture = ExtResource("2_fj7yv")
-uv1_triplanar = true
 
 [node name="Node3D" type="Node3D"]
 
@@ -33,24 +36,62 @@ shadow_enabled = true
 
 [node name="Char3d" parent="." instance=ExtResource("1_f3sb7")]
 transform = Transform3D(-5.9604645e-08, 0, 1, 0, 1, 0, -1, 0, -5.9604645e-08, 7, 0, 0)
-look_sensitivity = null
-max_walk_speed = null
-coyote_time = null
-jump_buffer_time = null
-MAX_FLOOR_DEG = null
+MAX_FLOOR_DEG = 45.1
 
 [node name="wold" type="Node3D" parent="."]
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="wold"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
 use_collision = true
-size = Vector3(51, 11, 51)
+size = Vector3(51, 25, 51)
+material = ExtResource("2_aqk2v")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="wold/CSGBox3D2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.5, 0)
 operation = 2
 size = Vector3(50, 11, 50)
-material = SubResource("StandardMaterial3D_fj7yv")
+material = ExtResource("2_aqk2v")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="wold/CSGBox3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, 8)
+operation = 2
+radius = 3.0
+radial_segments = 16
+rings = 8
+material = ExtResource("3_036b0")
+
+[node name="CSGSphere3D4" type="CSGSphere3D" parent="wold/CSGBox3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 4, 10)
+operation = 2
+radius = 4.0
+radial_segments = 16
+rings = 8
+material = ExtResource("3_036b0")
+
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="wold/CSGBox3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 3, 6)
+operation = 2
+radius = 2.0
+radial_segments = 16
+rings = 8
+material = ExtResource("3_036b0")
+
+[node name="CSGSphere3D3" type="CSGSphere3D" parent="wold/CSGBox3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 2, 7)
+operation = 2
+radius = 1.0
+radial_segments = 16
+rings = 8
+material = ExtResource("3_036b0")
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="wold/CSGBox3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 3.1, 0)
+operation = 2
+inner_radius = 2.0
+outer_radius = 5.0
+sides = 32
+ring_sides = 16
+material = ExtResource("4_gbfbk")
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="wold"]
 use_collision = true
@@ -60,51 +101,258 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 2.5, 0)
 radius = 2.0
 height = 5.0
 sides = 16
+material = ExtResource("4_pkg7o")
 
 [node name="CSGCylinder3D3" type="CSGCylinder3D" parent="wold/CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 2.5, 6)
 radius = 2.0
 height = 5.0
 sides = 16
+material = ExtResource("4_pkg7o")
 
 [node name="CSGCylinder3D4" type="CSGCylinder3D" parent="wold/CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 2.5, 3)
 radius = 2.0
 height = 5.0
 sides = 16
+material = ExtResource("4_pkg7o")
 
 [node name="CSGCylinder3D2" type="CSGCylinder3D" parent="wold/CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 7.5, 3)
+material_override = ExtResource("4_pkg7o")
 radius = 2.0
 height = 5.0
 sides = 16
+material = ExtResource("4_pkg7o")
 
-[node name="CSGSphere3D" type="CSGSphere3D" parent="wold/CSGCombiner3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
-radius = 3.0
-radial_segments = 16
-rings = 8
+[node name="CSGBox3D" type="CSGBox3D" parent="wold"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 2, -4)
+use_collision = true
+size = Vector3(8, 4, 8)
+material = ExtResource("2_aqk2v")
 
-[node name="CSGSphere3D2" type="CSGSphere3D" parent="wold/CSGCombiner3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 20)
-radius = 3.0
-radial_segments = 16
-rings = 8
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="wold/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -2, 2, 2.75)
+operation = 2
+radius = 4.0
+height = 2.5
+sides = 32
+material = ExtResource("5_gbfbk")
 
-[node name="CSGSphere3D3" type="CSGSphere3D" parent="wold/CSGCombiner3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 20)
-radius = 3.0
-radial_segments = 16
-rings = 8
+[node name="CSGBox3D" type="CSGBox3D" parent="wold/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 2, 2.75)
+operation = 2
+size = Vector3(3, 8, 2.5)
+material = ExtResource("2_aqk2v")
+
+[node name="CSGCombiner3D2" type="CSGCombiner3D" parent="wold"]
+transform = Transform3D(1, 0, 0, 0, 0.9986295, -0.05233596, 0, 0.05233596, 0.9986295, 11, 0, -10)
+use_collision = true
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, -1)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D3" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, -2)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D4" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, -3)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D5" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, -4)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D6" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, -5)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D7" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -0.25, 0)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D8" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -0.25, -1)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D9" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -0.25, -2)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D10" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -0.25, -3)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D11" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -0.25, -4)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D12" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -0.25, -5)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D13" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.25, 0)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D14" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.25, -1)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D15" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.25, -2)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D16" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.25, -3)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D17" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.25, -4)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D18" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.25, -5)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D19" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -0.25, 0)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D20" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -0.25, -1)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D21" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -0.25, -2)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D22" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -0.25, -3)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D23" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -0.25, -4)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D24" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -0.25, -5)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D25" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -0.25, 0)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D26" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -0.25, -1)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D27" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -0.25, -2)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D28" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -0.25, -3)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D29" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -0.25, -4)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D30" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -0.25, -5)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D31" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -0.25, 0)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D32" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -0.25, -1)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D33" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -0.25, -2)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D34" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -0.25, -3)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D35" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -0.25, -4)
+material = ExtResource("4_pkg7o")
+
+[node name="CSGSphere3D36" type="CSGSphere3D" parent="wold/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -0.25, -5)
+material = ExtResource("4_pkg7o")
+
+[node name="WedgeTest" type="CSGCombiner3D" parent="wold"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -10)
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="wold/WedgeTest"]
+transform = Transform3D(0.7071067, -0.7071067, 0, 0.7071067, 0.7071067, 0, 0, 0, 1, 0, 0, 0)
+size = Vector3(1, 1, 3)
+material = ExtResource("4_gbfbk")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="wold/WedgeTest"]
+transform = Transform3D(0.70710677, -0.70710677, 0, 0.70710677, 0.70710677, 0, 0, 0, 1, 1, 0, 0)
+size = Vector3(1, 1, 3)
+material = ExtResource("4_gbfbk")
 
 [node name="RigidCube" parent="." instance=ExtResource("3_tlwt5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8127544, 0.25, -2.8390932)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3708885, 0.25, -2.2552767)
 
 [node name="RigidCube2" parent="." instance=ExtResource("3_tlwt5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8442345, 0.24999952, -3.5795135)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4023685, 0.24999952, -2.995697)
 
 [node name="RigidCube3" parent="." instance=ExtResource("3_tlwt5")]
-transform = Transform3D(0.961593, 0, 0.27447954, 0, 1, 0, -0.27447954, 0, 0.961593, 2.8158462, 0.7500005, -3.3601642)
+transform = Transform3D(0.961593, 0, 0.27447954, 0, 1, 0, -0.27447954, 0, 0.961593, 1.3739803, 0.7500005, -2.7763476)
 
 [node name="RigidCube4" parent="." instance=ExtResource("4_aqk2v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8788483, 1.2500005, -3.4624982)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4369824, 1.2500005, -2.8786817)
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+
+[node name="RigidCube5" parent="." instance=ExtResource("9_wse8f")]
+transform = Transform3D(0.6011458, 0, -0.7991394, 0, 1, 0, 0.7991394, 0, 0.6011458, 3.1477005, 0.25000477, -5.8528957)
+
+[node name="RigidCube6" parent="." instance=ExtResource("9_wse8f")]
+transform = Transform3D(0.49885085, 0, -0.8666878, 0, 1, 0, 0.8666878, 0, 0.49885085, 2.571744, 0.25000477, -5.4956074)
+
+[node name="RigidCube7" parent="." instance=ExtResource("9_wse8f")]
+transform = Transform3D(0.69826543, 0, -0.71583897, 0, 1, 0, 0.71583897, 0, 0.69826543, 2.8435974, 0.75000477, -5.639417)
+
+[node name="RigidCube8" parent="." instance=ExtResource("10_ic0uy")]
+transform = Transform3D(0.8484364, 0, -0.5292975, 0, 1, 0, 0.5292975, 0, 0.8484364, 1.8374901, 0.25000525, -4.5197926)
+
+[node name="RigidCube9" parent="." instance=ExtResource("10_ic0uy")]
+transform = Transform3D(0.8099188, 0, -0.586542, 0, 1, 0, 0.586542, 0, 0.8099188, 1.559591, 0.25000477, -3.8814583)
+
+[node name="RigidCube10" parent="." instance=ExtResource("10_ic0uy")]
+transform = Transform3D(0.9546256, 0, -0.29780805, 0, 1, 0, 0.29780805, 0, 0.9546256, 1.6179762, 0.75000477, -4.1883826)
+
+[node name="RigidCube13" parent="." instance=ExtResource("4_aqk2v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.710532, 0.15635931, 7.9190435)
+
+[node name="RigidCube11" parent="." instance=ExtResource("4_aqk2v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5780811, 0.16118273, 6.920747)
+
+[node name="RigidCube12" parent="." instance=ExtResource("4_aqk2v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.044873, 0.677485, 8.149672)
+
+[node name="RigidCube14" parent="." instance=ExtResource("4_aqk2v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9355925, 1.2382442, 7.923303)
+
+[node name="RigidCube15" parent="." instance=ExtResource("4_aqk2v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0565064, 1.7481594, 8.290145)
+
+[node name="RigidCube16" parent="." instance=ExtResource("4_aqk2v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9991152, 2.2961948, 8.36633)

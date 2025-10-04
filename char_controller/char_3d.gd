@@ -3,6 +3,9 @@ extends RigidBody3D
 @export var look_sensitivity: float = 0.02
 @export var max_walk_speed: float = 5
 @export var walk_acceleration: Curve # TODO: find out what units it uses.
+@export var air_acceleration: Curve ## Acceleration while airborn
+
+@export var air_jumps: int = 2 ## amount of mid air jumps the character can make
 @export var coyote_time: int = 200 ## in miliseconds
 @export var jump_buffer_time: int = 200 ## in miliseconds
 
@@ -13,35 +16,42 @@ extends RigidBody3D
 # labels
 @onready var touching_floor_label: Label = %TouchingFloorLabel
 @onready var current_velocity_label: Label = %CurrentVelocityLabel
+@onready var air_jumps_left_label: Label = %AirJumpsLeftLabel
+@onready var coyote_time_left_label: Label = %CoyoteTimeLeftLabel
 
 @onready var floor_normal: Vector3 = Vector3.DOWN
 @onready var is_on_floor: bool = false
+@onready var jumps_left: int = 0 # to track air jumps
+@onready var coyote_time_left: float
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
+@warning_ignore("unused_parameter")
 func _physics_process(delta: float) -> void:
 	touching_floor_label.text = str(floor_normal)
 	current_velocity_label.text = str(linear_velocity.length())
-	
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor:
-		linear_velocity.y = 5
-	
-	movement(delta)
+	air_jumps_left_label.text = str(jumps_left) + "/" + str(air_jumps)
+	coyote_time_left_label.text = str(coyote_time_left)
+	#movement(delta)
 
-func movement(delta: float) -> void:
+func movement_old(delta: float) -> void:
 	var vertical_velocity := Vector3(0, linear_velocity.y, 0)
 	var horizontal_velocity := Vector3(linear_velocity.x, 0, linear_velocity.z)
 	
 	# get player input
 	var input_direction := Input.get_vector("LEFT", "RIGHT", "FORWARD", "BACKWARD").normalized()
-	var desired_direction: Vector3 = (transform.basis * Vector3(input_direction.x, 0, input_direction.y)).normalized() # world-space
+	if not input_direction == Vector2.ZERO:	
+		var desired_direction: Vector3 = (transform.basis * Vector3(input_direction.x, 0, input_direction.y)).normalized() # world-space
+		var whish_velocity: Vector3 = desired_direction * max_walk_speed
 	
-	var target_velocity: Vector3 = desired_direction * max_walk_speed
-	
-	# smooth accel/decel based on curve
-	var accel_factor = walk_acceleration.sample(horizontal_velocity.length() / max_walk_speed)
-	horizontal_velocity = horizontal_velocity.lerp(target_velocity, accel_factor * delta)
+		# smooth accel/decel based on curve
+		var accel_factor = walk_acceleration.sample(horizontal_velocity.length() / max_walk_speed)
+		if not is_on_floor:
+			accel_factor = air_acceleration.sample(horizontal_velocity.length() / max_walk_speed)
+		horizontal_velocity = horizontal_velocity.lerp(whish_velocity, accel_factor * delta)
+	elif is_on_floor:
+		pass
 	
 	# recombine with vertical velocity
 	linear_velocity = horizontal_velocity + vertical_velocity
@@ -51,8 +61,56 @@ func movement(delta: float) -> void:
 		#delta_velocity = linear_velocity.length() /
 		#pass
 
+
+
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
-	# check if on floor and get average normalized floor vector
+	var delta = state.step
+	get_floor_info(state)
+	movement(state, delta)
+	jump(state, delta)
+
+func movement(state: PhysicsDirectBodyState3D, delta) -> void:
+	var vertical_velocity := Vector3(0, linear_velocity.y, 0)
+	var horizontal_velocity := Vector3(linear_velocity.x, 0, linear_velocity.z)
+	
+	# get player input
+	var input_direction := Input.get_vector("LEFT", "RIGHT", "FORWARD", "BACKWARD").normalized()
+	if not input_direction == Vector2.ZERO:	
+		var desired_direction: Vector3 = (transform.basis * Vector3(input_direction.x, 0, input_direction.y)).normalized() # world-space
+		var target_velocity: Vector3 = desired_direction * max_walk_speed
+	
+		# smooth accel/decel based on curve
+		var accel_factor = walk_acceleration.sample(horizontal_velocity.length() / max_walk_speed)
+		if not is_on_floor:
+			accel_factor = air_acceleration.sample(horizontal_velocity.length() / max_walk_speed)
+		horizontal_velocity = horizontal_velocity.lerp(target_velocity, accel_factor * delta)
+	elif is_on_floor:
+		pass
+	
+	# recombine with vertical velocity
+	state.linear_velocity = horizontal_velocity + vertical_velocity
+
+func jump(state: PhysicsDirectBodyState3D, delta: float) -> void:
+	coyote_time_left += -delta
+	
+	if is_on_floor:
+		jumps_left = air_jumps
+		coyote_time_left = coyote_time / 1000.0 # to milisecondsz
+	
+	if not Input.is_action_just_pressed("ui_accept"):
+		return
+	
+	if is_on_floor:
+		state.linear_velocity.y = 5
+	elif coyote_time_left > 0: # coyote time
+		coyote_time_left = 0
+		state.linear_velocity.y = 5
+	elif jumps_left > 0:
+		state.linear_velocity.y = 5
+		jumps_left += -1
+
+func get_floor_info(state: PhysicsDirectBodyState3D) -> void:
+	# check if on floor and get average normalized floor vector (contact based ground detecton)
 	var average_normal: Vector3 = Vector3.ZERO
 	for i in range(state.get_contact_count()):
 		var collider: Vector3 = state.get_contact_local_normal(i)

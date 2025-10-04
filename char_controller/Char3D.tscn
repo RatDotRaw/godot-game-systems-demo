@@ -1,13 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://dqc6atesu6yt5"]
+[gd_scene load_steps=7 format=3 uid="uid://dqc6atesu6yt5"]
 
 [ext_resource type="Script" uid="uid://biipweh5tn8qc" path="res://char_controller/char_3d.gd" id="1_43pjh"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_43pjh"]
-friction = 0.0
 
 [sub_resource type="Curve" id="Curve_43pjh"]
 _limits = [0.0, 10.0, 0.0, 5.0]
 _data = [Vector2(0, 10), 0.0, 0.0, 0, 0, Vector2(5, 5), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_3qy2t"]
+_limits = [0.0, 5.0, 0.0, 1.0]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(1, 1.5), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="PrismMesh" id="PrismMesh_3e3go"]
@@ -20,12 +24,14 @@ radius = 0.35
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
+mass = 5.0
 physics_material_override = SubResource("PhysicsMaterial_43pjh")
 can_sleep = false
 contact_monitor = true
-max_contacts_reported = 8
+max_contacts_reported = 16
 script = ExtResource("1_43pjh")
 walk_acceleration = SubResource("Curve_43pjh")
+air_acceleration = SubResource("Curve_3qy2t")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 0, 0, -0.25)
@@ -68,6 +74,30 @@ layout_mode = 2
 text = "current velocity:"
 
 [node name="CurrentVelocityLabel" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "NaN"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "mid air jumps:"
+
+[node name="AirJumpsLeftLabel" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "NaN"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "coyote time left ms:"
+
+[node name="CoyoteTimeLeftLabel" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer4"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "NaN"
