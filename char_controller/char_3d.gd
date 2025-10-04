@@ -2,8 +2,9 @@ extends RigidBody3D
 
 @export var look_sensitivity: float = 0.02
 @export var max_walk_speed: float = 5
-@export var walk_acceleration: Curve # TODO: find out what units it uses.
+@export var walk_acceleration: Curve # Each point on the curve directly represents the acceleration speed for a given normalized velocity.
 @export var air_acceleration: Curve ## Acceleration while airborn
+@export var ground_friction: float = 7.0
 
 @export var air_jumps: int = 2 ## amount of mid air jumps the character can make
 @export var coyote_time: int = 200 ## in miliseconds
@@ -69,26 +70,58 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 	movement(state, delta)
 	jump(state, delta)
 
+## movement + friction
 func movement(state: PhysicsDirectBodyState3D, delta) -> void:
-	var vertical_velocity := Vector3(0, linear_velocity.y, 0)
-	var horizontal_velocity := Vector3(linear_velocity.x, 0, linear_velocity.z)
-	
 	# get player input
-	var input_direction := Input.get_vector("LEFT", "RIGHT", "FORWARD", "BACKWARD").normalized()
-	if not input_direction == Vector2.ZERO:	
-		var desired_direction: Vector3 = (transform.basis * Vector3(input_direction.x, 0, input_direction.y)).normalized() # world-space
-		var target_velocity: Vector3 = desired_direction * max_walk_speed
+	var input_direction := Input.get_vector("LEFT", "RIGHT", "FORWARD", "BACKWARD") #.normalized()
+	# Cap input vector length (so diagonals aren’t faster)
+	if input_direction.length() > 1.0:
+		input_direction = input_direction.normalized()
 	
-		# smooth accel/decel based on curve
-		var accel_factor = walk_acceleration.sample(horizontal_velocity.length() / max_walk_speed)
-		if not is_on_floor:
-			accel_factor = air_acceleration.sample(horizontal_velocity.length() / max_walk_speed)
-		horizontal_velocity = horizontal_velocity.lerp(target_velocity, accel_factor * delta)
-	elif is_on_floor:
-		pass
+	if is_on_floor:
+		apply_floor_friction(state, delta, ground_friction)
+	if input_direction == Vector2.ZERO:
+		return
 	
-	# recombine with vertical velocity
-	state.linear_velocity = horizontal_velocity + vertical_velocity
+	# to world-space
+	var desired_direction: Vector3 = transform.basis * Vector3(
+			input_direction.x, 
+			0, 
+			input_direction.y
+		).normalized()
+	
+	# quake 1 style movement math + my extra
+	var wish_speed: float = min(input_direction.length(), 1.0) * max_walk_speed
+	# get current speed in desired direction
+	var current_speed = state.linear_velocity.dot(desired_direction)
+	
+	# calculate target speed
+	#var target_speed = input_direction.length() * max_walk_speed
+	# how much more speed to add
+	var add_speed: float = wish_speed - current_speed # how much more speed to add
+	if add_speed <= 0.0: #already above target speed
+		return
+	
+	var accel_speed: float = 10 * delta * wish_speed  # walk accel * max * delta
+	var speed_fraction = clamp(state.linear_velocity.length() / max_walk_speed, 0.0, 1.0)
+	if is_on_floor:
+		accel_speed = walk_acceleration.sample(speed_fraction) * delta * wish_speed
+	else:
+		accel_speed = air_acceleration.sample(speed_fraction) * delta * wish_speed
+	
+	if accel_speed > add_speed:
+		accel_speed = add_speed
+	state.linear_velocity += desired_direction * accel_speed
+
+func apply_floor_friction(state: PhysicsDirectBodyState3D, delta: float, friction: float) -> void:
+	var horizontal_velocity = Vector3(state.linear_velocity.x, 0, state.linear_velocity.z)
+	var speed = horizontal_velocity.length()
+	if speed < 0.01:
+		state.linear_velocity = Vector3.ZERO
+		return
+	var drop = speed * friction * delta
+	state.linear_velocity *= max(speed - drop, 0) / speed
+
 
 func jump(state: PhysicsDirectBodyState3D, delta: float) -> void:
 	coyote_time_left += -delta
