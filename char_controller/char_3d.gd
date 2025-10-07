@@ -66,16 +66,13 @@ func movement(state: PhysicsDirectBodyState3D, delta) -> void:
 		).normalized()
 	
 	# project desired_direction to floor_normal
-	desired_direction = desired_direction.slide(floor_normal).normalized()
+	desired_direction = desired_direction.slide(floor_normal).normalized() * desired_direction.length()
 	
-	print(desired_direction)
 	# quake 1 style movement math + my extra
 	var wish_speed: float = min(input_direction.length(), 1.0) * max_walk_speed
 	# get current speed in desired direction
 	var current_speed = state.linear_velocity.dot(desired_direction)
 	
-	# calculate target speed
-	#var target_speed = input_direction.length() * max_walk_speed
 	# how much more speed to add
 	var add_speed: float = wish_speed - current_speed # how much more speed to add
 	if add_speed <= 0.0: #already above target speed
