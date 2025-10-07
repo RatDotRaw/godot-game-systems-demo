@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://2tcq4g7p2mhs"]
+
+[ext_resource type="Script" uid="uid://cgbn4r5ed2s0a" path="res://rocket.gd" id="1_al867"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g04ui"]
+radius = 0.05029297
+height = 0.5
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_rful3"]
+radius = 0.05
+height = 0.5
+
+[node name="Rocket" type="Node3D"]
+script = ExtResource("1_al867")
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CapsuleShape3D_g04ui")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_rful3")

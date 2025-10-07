@@ -147,6 +147,12 @@ operation = 2
 size = Vector3(3, 8, 2.5)
 material = ExtResource("2_aqk2v")
 
+[node name="CSGBox3D2" type="CSGBox3D" parent="wold/CSGBox3D"]
+transform = Transform3D(0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, 0, 0, 0, 1, -1.3349361, 1.25, -1.25)
+operation = 2
+size = Vector3(3, 9, 2.5)
+material = ExtResource("2_aqk2v")
+
 [node name="CSGCombiner3D2" type="CSGCombiner3D" parent="wold"]
 transform = Transform3D(1, 0, 0, 0, 0.9986295, -0.05233596, 0, 0.05233596, 0.9986295, 11, 0, -10)
 use_collision = true
