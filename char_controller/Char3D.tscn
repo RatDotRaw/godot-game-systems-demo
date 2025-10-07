@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dqc6atesu6yt5"]
+[gd_scene load_steps=8 format=3 uid="uid://dqc6atesu6yt5"]
 
 [ext_resource type="Script" uid="uid://biipweh5tn8qc" path="res://char_controller/char_3d.gd" id="1_43pjh"]
 
@@ -22,6 +22,11 @@ size = Vector3(0.2, 0.1, 0.05)
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_43pjh"]
 radius = 0.35
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_43pjh"]
+top_radius = 0.05
+bottom_radius = 0.0
+height = 0.2
+
 [node name="Char3d" type="RigidBody3D"]
 axis_lock_angular_x = true
 axis_lock_angular_y = true
@@ -41,9 +46,10 @@ unique_name_in_owner = true
 editor_description = "A simple node to hold the player orientation.
 Very important!"
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Orientation"]
 transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 0, 0, -0.25)
 mesh = SubResource("PrismMesh_3e3go")
+skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -55,6 +61,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CameraGimbal"]
 current = true
+
+[node name="Visualizers" type="Node3D" parent="."]
+
+[node name="Floorvisualizer" type="Node3D" parent="Visualizers"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+
+[node name="Cone" type="MeshInstance3D" parent="Visualizers/Floorvisualizer"]
+transform = Transform3D(1, 0, 0, 0, 1.3113416e-07, 1, 0, -1, 1.3113416e-07, 0, 0, 0)
+mesh = SubResource("CylinderMesh_43pjh")
+skeleton = NodePath("../../..")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

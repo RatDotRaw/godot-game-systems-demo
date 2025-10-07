@@ -19,6 +19,7 @@ extends RigidBody3D
 @onready var current_velocity_label: Label = %CurrentVelocityLabel
 @onready var air_jumps_left_label: Label = %AirJumpsLeftLabel
 @onready var coyote_time_left_label: Label = %CoyoteTimeLeftLabel
+@onready var floorvisualizer: Node3D = %Floorvisualizer
 
 @onready var floor_normal: Vector3 = Vector3.DOWN
 @onready var is_on_floor: bool = false
@@ -30,6 +31,7 @@ func _ready() -> void:
 
 @warning_ignore("unused_parameter")
 func _physics_process(delta: float) -> void:
+	floorvisualizer.look_at(floor_normal+floorvisualizer.global_position)
 	touching_floor_label.text = str(floor_normal)
 	current_velocity_label.text = str(linear_velocity.length())
 	air_jumps_left_label.text = str(jumps_left) + "/" + str(air_jumps)
@@ -44,6 +46,7 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 
 ## movement + friction
 func movement(state: PhysicsDirectBodyState3D, delta) -> void:
+	
 	# get player input
 	var input_direction := Input.get_vector("LEFT", "RIGHT", "FORWARD", "BACKWARD") #.normalized()
 	# Cap input vector length (so diagonals aren’t faster)
@@ -62,6 +65,10 @@ func movement(state: PhysicsDirectBodyState3D, delta) -> void:
 			input_direction.y
 		).normalized()
 	
+	# project desired_direction to floor_normal
+	desired_direction = desired_direction.slide(floor_normal).normalized()
+	
+	print(desired_direction)
 	# quake 1 style movement math + my extra
 	var wish_speed: float = min(input_direction.length(), 1.0) * max_walk_speed
 	# get current speed in desired direction
