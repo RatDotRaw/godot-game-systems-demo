@@ -1,24 +1,28 @@
 [gd_scene load_steps=4 format=3 uid="uid://2tcq4g7p2mhs"]
 
 [ext_resource type="Script" uid="uid://cgbn4r5ed2s0a" path="res://rocket.gd" id="1_al867"]
+[ext_resource type="PackedScene" uid="uid://bcdgw0cjco81b" path="res://rocket.glb" id="2_g04ui"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g04ui"]
 radius = 0.05029297
-height = 0.5
+height = 0.375
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_rful3"]
-radius = 0.05
-height = 0.5
-
-[node name="Rocket" type="Node3D"]
+[node name="Rocket" type="CharacterBody3D"]
 script = ExtResource("1_al867")
 
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [node name="Area3D" type="Area3D" parent="."]
+physics_interpolation_mode = 1
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12, -5.2453664e-09)
 shape = SubResource("CapsuleShape3D_g04ui")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
-mesh = SubResource("CapsuleMesh_rful3")
+[node name="rocket" parent="." instance=ExtResource("2_g04ui")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

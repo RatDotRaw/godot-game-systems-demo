@@ -1,15 +1,16 @@
-[gd_scene load_steps=14 format=3 uid="uid://cqfeerp4ayk4c"]
+[gd_scene load_steps=15 format=3 uid="uid://cqfeerp4ayk4c"]
 
 [ext_resource type="PackedScene" uid="uid://dqc6atesu6yt5" path="res://char_controller/Char3D.tscn" id="1_f3sb7"]
-[ext_resource type="Material" uid="uid://1mvei6eaxkyo" path="res://textures/dark.tres" id="2_aqk2v"]
-[ext_resource type="Material" uid="uid://m4icjr7i3mjt" path="res://textures/red.tres" id="3_036b0"]
+[ext_resource type="Material" uid="uid://1mvei6eaxkyo" path="res://resources/textures/dark.tres" id="2_aqk2v"]
+[ext_resource type="Material" uid="uid://m4icjr7i3mjt" path="res://resources/textures/red.tres" id="3_036b0"]
 [ext_resource type="PackedScene" uid="uid://ddy4yl4phqnd2" path="res://objects/RigidCube.tscn" id="3_tlwt5"]
 [ext_resource type="PackedScene" uid="uid://tk8pj8g7k3bh" path="res://objects/RigidSphere.tscn" id="4_aqk2v"]
-[ext_resource type="Material" uid="uid://g2qx2rq5jgvg" path="res://textures/purple.tres" id="4_gbfbk"]
-[ext_resource type="Material" uid="uid://c8sjkmweophpm" path="res://textures/green.tres" id="4_pkg7o"]
-[ext_resource type="Material" uid="uid://dbubqaugcmkm7" path="res://textures/orange.tres" id="5_gbfbk"]
+[ext_resource type="Material" uid="uid://g2qx2rq5jgvg" path="res://resources/textures/purple.tres" id="4_gbfbk"]
+[ext_resource type="Material" uid="uid://c8sjkmweophpm" path="res://resources/textures/green.tres" id="4_pkg7o"]
+[ext_resource type="Material" uid="uid://dbubqaugcmkm7" path="res://resources/textures/orange.tres" id="5_gbfbk"]
 [ext_resource type="PackedScene" uid="uid://c22kt5by4oh4m" path="res://objects/RigidCubeM.tscn" id="9_wse8f"]
 [ext_resource type="PackedScene" uid="uid://b2rm38w7qqd0c" path="res://objects/RigidCubeH.tscn" id="10_ic0uy"]
+[ext_resource type="PackedScene" uid="uid://cix8u0mq57kcp" path="res://rocket_launcher.tscn" id="11_ic0uy"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f3sb7"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -36,6 +37,9 @@ environment = SubResource("Environment_tlwt5")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 shadow_enabled = true
+
+[node name="RocketLauncher" parent="." instance=ExtResource("11_ic0uy")]
+transform = Transform3D(0.7071067, -0.061628412, 0.70441604, 0, 0.9961947, 0.08715574, -0.70710677, -0.061628412, 0.704416, 4.9061465, 1.1000013, -0.9356797)
 
 [node name="Char3d" parent="." instance=ExtResource("1_f3sb7")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 7, 0, 0)

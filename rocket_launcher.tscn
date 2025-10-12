@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cix8u0mq57kcp"]
+
+[ext_resource type="Script" uid="uid://rbkvtry22j1e" path="res://rocket_launcher.gd" id="1_f4skl"]
+[ext_resource type="PackedScene" uid="uid://2qj6c0s6kj51" path="res://rocket_launcher.glb" id="1_vfvja"]
+
+[node name="RocketLauncher" type="Node3D"]
+script = ExtResource("1_f4skl")
+
+[node name="rocket_launcher" parent="." instance=ExtResource("1_vfvja")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, -0.5)
+
+[node name="FireSpawnPoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
