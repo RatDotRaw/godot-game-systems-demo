@@ -22,6 +22,7 @@ extends RigidBody3D
 @onready var floorvisualizer: Node3D = %Floorvisualizer
 
 @onready var floor_normal: Vector3 = Vector3.DOWN
+var old_floor_normal: Vector3
 @onready var is_on_floor: bool = false
 @onready var jumps_left: int = 0 # to track air jumps
 @onready var coyote_time_left: float
@@ -31,7 +32,9 @@ func _ready() -> void:
 
 @warning_ignore("unused_parameter")
 func _physics_process(delta: float) -> void:
-	floorvisualizer.look_at(floor_normal+floorvisualizer.global_position)
+	if floor_normal != Vector3.ZERO and floor_normal != old_floor_normal:
+		old_floor_normal = floor_normal
+		floorvisualizer.look_at(floor_normal+floorvisualizer.global_position)
 	touching_floor_label.text = str(floor_normal)
 	current_velocity_label.text = str(linear_velocity.length())
 	air_jumps_left_label.text = str(jumps_left) + "/" + str(air_jumps)
@@ -66,7 +69,8 @@ func movement(state: PhysicsDirectBodyState3D, delta) -> void:
 		).normalized()
 	
 	# project desired_direction to floor_normal
-	desired_direction = desired_direction.slide(floor_normal).normalized() * desired_direction.length()
+	if floor_normal != Vector3.ZERO:
+		desired_direction = desired_direction.slide(floor_normal).normalized() * desired_direction.length()
 	
 	# quake 1 style movement math + my extra
 	var wish_speed: float = min(input_direction.length(), 1.0) * max_walk_speed

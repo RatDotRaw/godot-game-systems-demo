@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://dqc6atesu6yt5"]
+[gd_scene load_steps=9 format=3 uid="uid://dqc6atesu6yt5"]
 
 [ext_resource type="Script" uid="uid://biipweh5tn8qc" path="res://char_controller/char_3d.gd" id="1_43pjh"]
+[ext_resource type="PackedScene" uid="uid://cix8u0mq57kcp" path="res://rocket_launcher.tscn" id="2_3qy2t"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_43pjh"]
 friction = 0.0
@@ -34,6 +35,7 @@ axis_lock_angular_z = true
 mass = 5.0
 physics_material_override = SubResource("PhysicsMaterial_43pjh")
 can_sleep = false
+continuous_cd = true
 contact_monitor = true
 max_contacts_reported = 24
 script = ExtResource("1_43pjh")
@@ -61,6 +63,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CameraGimbal"]
 current = true
+
+[node name="RocketLauncher" parent="CameraGimbal/Camera3D" instance=ExtResource("2_3qy2t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, -1.1)
 
 [node name="Visualizers" type="Node3D" parent="."]
 
