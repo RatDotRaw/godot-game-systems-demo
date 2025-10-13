@@ -15,14 +15,13 @@ func _ready() -> void:
 	cooldown_timer.wait_time = cooldown_time / 1000.0
 
 func _physics_process(delta: float) -> void:
-	print(cooldown_timer.time_left)
 	if cooldown_timer.is_stopped() and fire:
 		fire=false
 		cooldown_timer.start()
 		# get rocket ready
-		var instance: Node3D = rocket.instantiate()
-		instance.global_position = fire_spawn_point.global_position
-		instance.transform.basis = fire_spawn_point.global_transform.basis
+		var instance: RocketProjectile3D = rocket.instantiate()
+		#instance.global_position = fire_spawn_point.global_position
+		instance.transform = fire_spawn_point.global_transform
 		get_tree().root.add_child(instance)
 
 func _unhandled_input(event: InputEvent) -> void:
