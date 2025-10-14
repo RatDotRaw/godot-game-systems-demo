@@ -15,7 +15,7 @@ height = 0.375
 [sub_resource type="SphereShape3D" id="SphereShape3D_g04ui"]
 radius = 1.0
 
-[node name="Rocket" type="Node3D"]
+[node name="Rocket" type="CharacterBody3D"]
 script = ExtResource("1_al867")
 force_falloff = SubResource("Curve_g04ui")
 

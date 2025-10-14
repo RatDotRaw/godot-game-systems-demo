@@ -1,7 +1,7 @@
-extends Node3D
+extends CharacterBody3D
 class_name RocketProjectile3D
 
-@export var speed = 20.0
+@export var travel_speed = 20.0
 @export var owner_node: Node3D ## Player or entity who shot the rocket that should be ignored during collision checks
 
 @export var explosion_radius: float = 1.0
@@ -13,8 +13,9 @@ class_name RocketProjectile3D
 func _ready() -> void:
 	explosion_shape.shape.radius = explosion_radius
 
-func _process(delta: float) -> void:
-	position += transform.basis * Vector3(0,0, -20) * delta
+func _physics_process(delta: float) -> void:
+	#velocity += transform.basis * Vector3(0,0, -travel_speed) * delta
+	move_and_collide(transform.basis * Vector3(0,0, -travel_speed) * delta)
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if body == owner_node:
