@@ -64,9 +64,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 [node name="Camera3D" type="Camera3D" parent="CameraGimbal"]
 current = true
 
-[node name="RocketLauncher" parent="CameraGimbal/Camera3D" node_paths=PackedStringArray("owner_node") instance=ExtResource("2_3qy2t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
-owner_node = NodePath("../../..")
+[node name="RocketLauncher" parent="CameraGimbal/Camera3D" instance=ExtResource("2_3qy2t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, -1)
 
 [node name="Visualizers" type="Node3D" parent="."]
 

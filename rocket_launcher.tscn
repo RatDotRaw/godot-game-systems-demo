@@ -5,6 +5,7 @@
 
 [node name="RocketLauncher" type="Node3D"]
 script = ExtResource("1_f4skl")
+cooldown_time = 500.0
 
 [node name="rocket_launcher" parent="." instance=ExtResource("1_vfvja")]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, -0.5)

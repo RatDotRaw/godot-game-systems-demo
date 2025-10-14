@@ -1,4 +1,5 @@
 extends RigidBody3D
+class_name RigidPlayer3d
 
 @export var mouse_sensitivity: float = 0.002
 @export var max_walk_speed: float = 5
@@ -21,6 +22,7 @@ extends RigidBody3D
 @onready var coyote_time_left_label: Label = %CoyoteTimeLeftLabel
 @onready var floorvisualizer: Node3D = %Floorvisualizer
 
+var uuid: int = ResourceUID.create_id()
 @onready var floor_normal: Vector3 = Vector3.DOWN
 var old_floor_normal: Vector3
 @onready var is_on_floor: bool = false
